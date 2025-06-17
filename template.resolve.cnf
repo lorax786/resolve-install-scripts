@@ -1,0 +1,45 @@
+[client]
+port = 3306
+
+[mysqld]
+port = 3306
+default-storage-engine = myisam
+max_connections = 1850
+max_user_connections = 0
+skip-external-locking
+key_buffer = 256M
+max_allowed_packet = 384M
+table_open_cache = 256
+sort_buffer_size = 1M
+net_buffer_length = 1M
+myisam_sort_buffer_size = 64M
+init_connect='SET collation_connection = utf8_general_ci'
+init_connect='SET NAMES utf8'
+character-set-server=utf8
+collation-server=utf8_general_ci
+skip-character-set-client-handshake
+max_heap_table_size = 1G
+tmp_table_size = 1G
+server-id       = 1
+
+[mysqldump]
+quick
+max_allowed_packet = 384M
+
+[mysql]
+no-auto-rehash
+
+[isamchk]
+key_buffer = 128M
+sort_buffer_size = 128M
+read_buffer = 2M
+write_buffer = 2M
+
+[myisamchk]
+key_buffer = 128M
+sort_buffer_size = 128M
+read_buffer = 2M
+write_buffer = 2M
+
+[mysqlhotcopy]
+interactive-timeout
