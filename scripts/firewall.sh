@@ -3,7 +3,7 @@
 PORTS=("4004" "3306" "1521" "9300" "8080" "8443" "35197" "15672" "9330" "9200" "4369" "25672")
 
 # Check if firewalld is installed
-if ! rpm -q firewall &> /dev/null; then
+if ! rpm -q firewalld &> /dev/null; then
   echo "firewalld is not installed. Installing firewalld now..."
   sudo dnf install firewalld
 fi
