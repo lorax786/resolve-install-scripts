@@ -3,10 +3,10 @@
 # Resolve service account
 RESOLVE_USER="$1"
 # Source code file location
-RESOLVE_SOURCECODE_FILEPATH = "$2"
-RESOLVE_CONFIG_FILEPATH = "$3"
+RESOLVE_SOURCECODE_FILEPATH="$2"
+RESOLVE_CONFIG_FILEPATH="$3"
 # Resolve install destination
-RESOLVE_INSTALL_DEST = "$4"
+RESOLVE_INSTALL_DEST="$4"
 
 # Current working directory
 CURRENT_PWD=$(pwd)

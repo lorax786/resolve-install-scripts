@@ -3,7 +3,7 @@
 PORTS=("4004" "3306" "1521" "9300" "8080" "8443" "35197" "15672" "9330" "9200" "4369" "25672")
 
 # Check if firewalld is installed
-if ! rpm -q firewall &> /dev/null; then
+if ! rpm -q firewalld &> /dev/null; then
   echo "firewalld is not installed. Installing firewalld now..."
   sudo dnf install firewalld
 fi
@@ -19,7 +19,7 @@ if ! systemctl is-enabled firewalld &> /dev/null; then
   echo "firewalld is installed but not enabled to start at boot"
   systemctl enable firewalld
 fi
-echo "firewalld is avaible, enabled at boot, and running"
+echo "firewalld is available, enabled at boot, and running"
 echo "configuring ports on the firewall"
 
 # Add the port permanently
