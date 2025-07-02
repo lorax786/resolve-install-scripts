@@ -28,9 +28,9 @@ done
 mkdir -p dist
 
 # Check if a gov.tar.gz file exists
-GZ_FILES=$(find dist -maxdepth 1 -type f -name "*.gov.tar.gz" | head -n 1)
+GZ_FILE=$(find dist -maxdepth 1 -type f -name "*.gov.tar.gz" | head -n 1)
 
-if [[ -f "$GZ_FILE" ]]; then
+if [[ -f "$GZ_FILES" ]]; then
   echo "Found existing Resolve Action Pro Gov Edition installation file" 
 else
   while true;do
@@ -50,12 +50,12 @@ else
 
 if [[ "$DOWNLOAD_FILE" == true ]]; then
   echo "Downloading Files CLI App..."
-  ARCH=$({rpm -q --qf '%{ARCH}' rpm)
+  ARCH=$(rpm -q --qf '%{ARCH}' rpm)
   curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_$ARCH.deb" -o files-cli.deb
   
   echo "Download complete.Installing Files CLI APP..."
   apt install ./files-cli.deb
-  FILES_CLI_APP= $(files-cli --version)
+  FILES_CLI_APP=$(files-cli --version)
   rm -rf ./files-cli.deb
   
   echo "Install complete. Files CLI App version: $FILES_CLI_APP"
@@ -70,7 +70,8 @@ if [[ "$DOWNLOAD_FILE" == true ]]; then
   RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
   files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION" "$CURRENT_DIR/dist"
   echo "Download files complete."
-else
+fi
+fi
 
 
 # USER ACCOUNT CREATION FOR MARIADB AND SERVICE ACCOUNT
@@ -134,7 +135,7 @@ INSTALL_DIR="/opt"
 read -rp "Enter the absolute path to the installation folder: " INSTALL_DIR
 
 # Resolve to an absolute path
-$INSTALL_DIR="$(realpath "$INSTALL_DIR" 2>/dev/null)"
+INSTALL_DIR="$(realpath "$INSTALL_DIR" 2>/dev/null)"
 
 # Validate the path
 if [[ ! -d "$INSTALL_DIR" ]]; then
@@ -144,12 +145,12 @@ fi
 
 # Give service account permissions to where resolve install files will be
 RESOLVE_INSTALL_DEST="$INSTALL_DIR/resolve"
-mkdir $RESOLVE_INSTALL_DEST
-chown resolve $INSTALL_PATH
+mkdir "$RESOLVE_INSTALL_DEST"
+chown resolve "$RESOLVE_INSTALL_DEST"
 
-RESOLVE_SOURCODE_FILE=$(ls "$CURRENT_DIR/dist" | head -n 1)
+RESOLVE_SOURCECODE_FILE=$(ls "$CURRENT_DIR/dist" | head -n 1)
 RESOLVE_CONFIG_FILE="resolve-linux64-$RESOLVE_VERSION.gov.tar.gz"
 
 # INSTALL RESOLVE ACTION PRO
-"$CURRENT_DIR/scripts/install.sh" "$RESOLVE_USER" "$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE" "$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE" "$RESOLVE_INSTALL_DEST"
+"$CURRENT_DIR/scripts/resolve.sh" "$RESOLVE_USER" "$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE" "$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE" "$RESOLVE_INSTALL_DEST"
 
