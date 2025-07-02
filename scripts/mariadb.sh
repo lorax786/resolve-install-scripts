@@ -3,7 +3,7 @@
 # Absolute path to config folder in script directory
 CONFIG_PATH="$1"
 
-# user account and password for MaraiDB resolve user
+# user account and password for MariaDB resolve user
 RESOLVE_USER="$2"
 RESOLVE_PASS="$3"
 
