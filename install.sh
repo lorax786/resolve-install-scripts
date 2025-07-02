@@ -30,7 +30,7 @@ mkdir -p dist
 # Check if a gov.tar.gz file exists
 GZ_FILE=$(find dist -maxdepth 1 -type f -name "*.gov.tar.gz" | head -n 1)
 
-if [[ -f "$GZ_FILES" ]]; then
+if [[ -f "$GZ_FILE" ]]; then
   echo "Found existing Resolve Action Pro Gov Edition installation file" 
 else
   while true;do
@@ -48,37 +48,37 @@ else
     fi
   done
 
-if [[ "$DOWNLOAD_FILE" == true ]]; then
-  echo "Downloading Files CLI App..."
-  ARCH=$(rpm -q --qf '%{ARCH}' rpm)
-  curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_$ARCH.deb" -o files-cli.deb
-  
-  echo "Download complete.Installing Files CLI APP..."
-  apt install ./files-cli.deb
-  FILES_CLI_APP=$(files-cli --version)
-  rm -rf ./files-cli.deb
-  
-  echo "Install complete. Files CLI App version: $FILES_CLI_APP"
-  echo "Configuring Files CLI App..."
-  FILES_API_KEY=$(grep 'FILES_API_KEY=' .install_config | cut -d '=' -f2- | tr -d '"')
-  FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .install_config | cut -d '=' -f2- | tr -d '"')
-  files-cli config set --api-key $FILES_API_KEY $FILES_SUBDOMAIN
-  echo "Configuration complete."
-  
-  echo "Downloading Resolve source code files..."
-  RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .install_config | cut -d '=' -f2- | tr -d '"')
-  RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
-  files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION" "$CURRENT_DIR/dist"
-  echo "Download files complete."
-fi
+  if [[ "$DOWNLOAD_FILE" == true ]]; then
+    echo "Downloading Files CLI App..."
+    ARCH=$(rpm -q --qf '%{ARCH}' rpm)
+    curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_$ARCH.deb" -o files-cli.deb
+
+    echo "Download complete.Installing Files CLI APP..."
+    apt install ./files-cli.deb
+    FILES_CLI_APP=$(files-cli --version)
+    rm -rf ./files-cli.deb
+
+    echo "Install complete. Files CLI App version: $FILES_CLI_APP"
+    echo "Configuring Files CLI App..."
+    FILES_API_KEY=$(grep 'FILES_API_KEY=' .install_config | cut -d '=' -f2- | tr -d '"')
+    FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .install_config | cut -d '=' -f2- | tr -d '"')
+    files-cli config set --api-key $FILES_API_KEY $FILES_SUBDOMAIN
+    echo "Configuration complete."
+
+    echo "Downloading Resolve source code files..."
+    RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .install_config | cut -d '=' -f2- | tr -d '"')
+    RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
+    files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION" "$CURRENT_DIR/dist"
+    echo "Download files complete."
+  fi
 fi
 
 
 # USER ACCOUNT CREATION FOR MARIADB AND SERVICE ACCOUNT
 # Prompt user for changes
 while true;do
-read -rp "Do you want to default user '$RESOLVE_USER' with default password? (y/n): " ANSWER
-ANSWER="${ANSWER,,}" # Lowercase
+  read -rp "Do you want to default user '$RESOLVE_USER' with default password? (y/n): " ANSWER
+  ANSWER="${ANSWER,,}" # Lowercase
 
   if [[ "$ANSWER" == "y" || "$ANSWER" == "yes" ]]; then
     CREATE_USER=true
