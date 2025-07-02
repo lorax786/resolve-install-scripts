@@ -49,7 +49,27 @@ else
   done
 
 if [[ "$DOWNLOAD_FILE" == true ]]; then
-  # TODO: setup REST API call to get latest file from files.com
+  echo "Downloading Files CLI App..."
+  ARCH=$({rpm -q --qf '%{ARCH}' rpm)
+  curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_$ARCH.deb" -o files-cli.deb
+  
+  echo "Download complete.Installing Files CLI APP..."
+  apt install ./files-cli.deb
+  FILES_CLI_APP= $(files-cli --version)
+  rm -rf ./files-cli.deb
+  
+  echo "Install complete. Files CLI App version: $FILES_CLI_APP"
+  echo "Configuring Files CLI App..."
+  FILES_API_KEY=$(grep 'FILES_API_KEY=' .install_config | cut -d '=' -f2- | tr -d '"')
+  FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .install_config | cut -d '=' -f2- | tr -d '"')
+  files-cli config set --api-key $FILES_API_KEY $FILES_SUBDOMAIN
+  echo "Configuration complete."
+  
+  echo "Downloading Resolve source code files..."
+  RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .install_config | cut -d '=' -f2- | tr -d '"')
+  RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
+  files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION" "$CURRENT_DIR/dist"
+  echo "Download files complete."
 else
 
 
@@ -80,19 +100,6 @@ else
   echo "User creation skipped. Using default user account and password settings."
 fi
 
-# INSTALLATION FILE DIRECTORY
-# Get Installation file directory
-read -rp "Enter the absolute path to the installation folder: " INSTALL_DIR
-
-# Resolve to an absolute path
-$INSTALL_DIR="$(realpath "$INSTALL_DIR" 2>/dev/null)"
-
-# Validate the path
-if [[ ! -d "$INSTALL_DIR" ]]; then
-  echo "Error: '$INSTALL_DIR' is not a valid directory."
-  exit 1
-fi
-
 echo "Installation directory: $INSTALL_DIR"
 
 # FIREWALL INSTALLATION & CONFIGURATION
@@ -121,11 +128,28 @@ fi
 # RESOLVE SERVICE ACCOUNT CREATION
 "$CURRENT_DIR/scripts/service.sh" "$RESOLVE_USER" "$RESOLVE_PASS"
 
+# SET & CONFIGURE PERMISSIONS FOR INSTALLATION FOLDER
+# Get Installation file directory
+INSTALL_DIR="/opt"
+read -rp "Enter the absolute path to the installation folder: " INSTALL_DIR
+
+# Resolve to an absolute path
+$INSTALL_DIR="$(realpath "$INSTALL_DIR" 2>/dev/null)"
+
+# Validate the path
+if [[ ! -d "$INSTALL_DIR" ]]; then
+  echo "Error: '$INSTALL_DIR' is not a valid directory."
+  exit 1
+fi
+
 # Give service account permissions to where resolve install files will be
-mkdir /opt/resolve
-chown resolve /opt/resolve/
+RESOLVE_INSTALL_DEST="$INSTALL_DIR/resolve"
+mkdir $RESOLVE_INSTALL_DEST
+chown resolve $INSTALL_PATH
 
+RESOLVE_SOURCODE_FILE=$(ls "$CURRENT_DIR/dist" | head -n 1)
+RESOLVE_CONFIG_FILE="resolve-linux64-$RESOLVE_VERSION.gov.tar.gz"
 
-
-
+# INSTALL RESOLVE ACTION PRO
+"$CURRENT_DIR/scripts/install.sh" "$RESOLVE_USER" "$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE" "$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE" "$RESOLVE_INSTALL_DEST"
 
