@@ -19,7 +19,7 @@ if ! systemctl is-enabled firewalld &> /dev/null; then
   echo "firewalld is installed but not enabled to start at boot"
   systemctl enable firewalld
 fi
-echo "firewalld is avaible, enabled at boot, and running"
+echo "firewalld is available, enabled at boot, and running"
 echo "configuring ports on the firewall"
 
 # Add the port permanently
