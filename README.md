@@ -22,7 +22,12 @@ This repository contains Bash scripts that automate the deployment of Resolve Ac
    bash install.sh
    ```
 
-   The script installs required packages such as `curl`, sets up firewall rules, prompts to create a Resolve service user, and can install MariaDB using configuration files from the `configs` directory. You will be asked to provide the destination directory where Resolve should be extracted.
+   The script does the following:
+   - installs required packages such as `curl`
+   - sets up firewall rules
+   - prompts to create a Resolve service user
+   - optionally, installs MariaDB using configuration files from the `configs` directory
+   - asks to provide the destination directory where Resolve should be extracted
 
 5. After completion the Resolve application files reside in the chosen directory under `resolve/`.
 
