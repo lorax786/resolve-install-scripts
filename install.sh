@@ -28,7 +28,7 @@ done
 mkdir -p dist
 
 # Check if a gov.tar.gz file exists
-GZ_FILES=$(find dist -maxdepth 1 -type f -name "*.gov.tar.gz" | head -n 1)
+GZ_FILE=$(find dist -maxdepth 1 -type f -name "*.gov.tar.gz" | head -n 1)
 
 if [[ -f "$GZ_FILE" ]]; then
   echo "Found existing Resolve Action Pro Gov Edition installation file" 
