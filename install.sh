@@ -75,7 +75,7 @@ else
 
     echo "Downloading Resolve source code files..."
     RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .config| cut -d '=' -f2- | tr -d '"')
-    RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
+    RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./-}"
     files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION/" "$CURRENT_DIR/dist"
     echo "Download files complete."
   fi
