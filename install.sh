@@ -70,13 +70,13 @@ else
     echo "Configuring Files CLI App..."
     FILES_API_KEY=$(grep 'FILES_API_KEY=' .config | cut -d '=' -f2- | tr -d '"')
     FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .config | cut -d '=' -f2- | tr -d '"')
-    files-cli config set --api-key $FILES_API_KEY $FILES_SUBDOMAIN
+    files-cli config set --api-key $FILES_API_KEY --subdomain $FILES_SUBDOMAIN
     echo "Configuration complete."
 
     echo "Downloading Resolve source code files..."
     RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .config| cut -d '=' -f2- | tr -d '"')
     RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
-    files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION" "$CURRENT_DIR/dist"
+    files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION/" "$CURRENT_DIR/dist"
     echo "Download files complete."
   fi
 fi
