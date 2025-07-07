@@ -8,7 +8,7 @@ This repository contains Bash scripts that automate the deployment of Resolve Ac
 
 1. Clone this repository and switch to its directory.
 2. Run the script as the **root** user. The installer verifies this and exits if it is not executed with elevated privileges.
-3. To allow the script to download Resolve packages, create an optional `.install_config` file in the project root with:
+3. To allow the script to download Resolve packages, create an optional `.config` file in the project root with:
 
    ```
    FILES_API_KEY=<Files.com API key>
