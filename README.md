@@ -14,6 +14,8 @@ This repository contains Bash scripts that automate the deployment of Resolve Ac
    FILES_API_KEY=<Files.com API key>
    FILES_SUBDOMAIN=<Files.com subdomain>
    RESOLVE_VERSION=<Resolve version>
+   RESOLVE_USER=<Resolve account user>
+   RESOLVE_PASS=<Resolve account password>
    ```
 
 4. Start the installation:
@@ -34,3 +36,13 @@ This repository contains Bash scripts that automate the deployment of Resolve Ac
 ## Contribute
 
 Contributions and suggestions are welcome. Feel free to open issues for bugs or improvements, or submit a pull request to add features or enhance the documentation.
+
+## Testing
+
+This project uses [ShellCheck](https://github.com/koalaman/shellcheck) to lint all Bash scripts. With ShellCheck installed, run:
+
+```bash
+bash tests/test_shellcheck.sh
+```
+
+The command scans all `*.sh` files tracked by Git and reports linting issues.
