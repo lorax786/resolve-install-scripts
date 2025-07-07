@@ -10,7 +10,7 @@ fi
 
 # Check if firewalld service is active
 if ! systemctl is-active --quiet firewalld; then
-  echo "firewalld is installed by not running. Starting it now..."
+  echo "firewalld is installed but not running. Starting it now..."
   systemctl start firewalld
 fi
 
