@@ -4,12 +4,20 @@
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Default credentials for Resolve MariaDB and Service Account
-RESOLVE_USER="resolve"
-RESOLVE_PASS="Resolve_2025"
+RESOLVE_USER=$(grep 'RESOLVE_USER=' .config | cut -d '=' -f2- | tr -d '"')
+RESOLVE_PASS=$(grep 'RESOLVE_PASS=' .config | cut -d '=' -f2- | tr -d '"')
+
+if [[ "$RESOLVE_USER" == "" ]]; then
+  RESOLVE_USER="resolve"
+fi
+
+if [[ "$RESOLVE_PASS" == "" ]]; then
+  RESOLVE_PASS="Resolve_2025"
+fi
 
 # ROOT USER
 # Check if the script is run as root
-if [["$EUID" -ne 0]]; then
+if [[ "$EUID" -ne 0 ]]; then
   echo "This script must be run as root. Please switch to the root user."
   exit 1
 fi
@@ -60,13 +68,13 @@ else
 
     echo "Install complete. Files CLI App version: $FILES_CLI_APP"
     echo "Configuring Files CLI App..."
-    FILES_API_KEY=$(grep 'FILES_API_KEY=' .install_config | cut -d '=' -f2- | tr -d '"')
-    FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .install_config | cut -d '=' -f2- | tr -d '"')
+    FILES_API_KEY=$(grep 'FILES_API_KEY=' .config | cut -d '=' -f2- | tr -d '"')
+    FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .config | cut -d '=' -f2- | tr -d '"')
     files-cli config set --api-key $FILES_API_KEY $FILES_SUBDOMAIN
     echo "Configuration complete."
 
     echo "Downloading Resolve source code files..."
-    RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .install_config | cut -d '=' -f2- | tr -d '"')
+    RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .config| cut -d '=' -f2- | tr -d '"')
     RESOLVE_CONVERTED_VERSION="${RESOLVE_VERSION//./_}"
     files-cli download "https://resolvesys.files.com/files/SE/Prospects/IntelliDyne/Software/$RESOLVE_CONVERTED_VERSION" "$CURRENT_DIR/dist"
     echo "Download files complete."
