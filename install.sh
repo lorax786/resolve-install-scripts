@@ -114,7 +114,7 @@ echo "Installation directory: $INSTALL_DIR"
 # FIREWALL INSTALLATION & CONFIGURATION
 # Configure firewall settings
 echo "Prior to installing Resolve Action Pro, we will add ports to the firewall. First, I will check if firewalld is installed..."
-"$CURRENT_DIR/scripts/firewall.sh"
+bash "$CURRENT_DIR/scripts/firewall.sh"
 
 # MARIADB INSTALLATION & CONFIGURATION
 # Ask the user if they want to install MariaDB
