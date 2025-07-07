@@ -58,13 +58,13 @@ else
 
   if [[ "$DOWNLOAD_FILE" == true ]]; then
     echo "Downloading Files CLI App..."
-    ARCH=$(rpm -q --qf '%{ARCH}' rpm)
-    curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_$ARCH.deb" -o files-cli.deb
+    #ARCH=$(rpm -q --qf '%{ARCH}' rpm)
+    curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_amd64.rpm" -o files-cli.rpm
 
     echo "Download complete.Installing Files CLI APP..."
-    dnf install ./files-cli.deb
+    dnf install ./files-cli.rpm
     FILES_CLI_APP=$(files-cli --version)
-    rm -rf ./files-cli.deb
+    rm -rf ./files-cli.rpm
 
     echo "Install complete. Files CLI App version: $FILES_CLI_APP"
     echo "Configuring Files CLI App..."
