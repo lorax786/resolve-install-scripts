@@ -62,7 +62,7 @@ else
     curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_$ARCH.deb" -o files-cli.deb
 
     echo "Download complete.Installing Files CLI APP..."
-    apt install ./files-cli.deb
+    dnf install ./files-cli.deb
     FILES_CLI_APP=$(files-cli --version)
     rm -rf ./files-cli.deb
 
