@@ -42,7 +42,7 @@ if [[ -f "$GZ_FILE" ]]; then
   echo "Found existing Resolve Action Pro Gov Edition installation file" 
 else
   while true;do
-  read -rp "Do you want to download the latest installation file: " ANSWER
+    read -rp "Do you want to download the latest installation file (y/n): " ANSWER
   ANSWER="${ANSWER,,}" # Lowercase
 
     if [[ "$ANSWER" == "y" || "$ANSWER" == "yes" ]]; then
@@ -100,7 +100,7 @@ while true;do
 done
 
 # Confirm what's being created
-if [[ "$CREATE_USER" == true ]]; then
+if [[ "$CREATE_USER" == false ]]; then
   read -rp "Entered desired username: " RESOLVE_USER
   read -rsp "Enter desired password for '$RESOLVE_USER': " RESOLVE_PASS
   echo
