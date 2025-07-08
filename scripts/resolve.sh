@@ -37,6 +37,6 @@ cd "$RESOLVE_INSTALL_DEST/bin"
 bash "./setup_limits.sh" --default --default --default --default
 bash "./setup_sysctl.sh" --default
 bash "./system_services.sh" all
-echo "Resolve ACtio Pro configuration complete."
+echo "Resolve Action Pro configuration complete."
 
 cd $CURRENT_PWD
