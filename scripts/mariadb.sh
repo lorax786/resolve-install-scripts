@@ -20,8 +20,8 @@ sudo dnf install MariaDB-server MariaDB-backup
 
 # Configure MariaDB via custom config files for resolve
 echo "Configure MariaDB to work with Resolve Action Pro"
-cp "$CONFIG_PATH/resolve.cnf" /etc/my.cnf.d/resolve.cnf
-cp "$CONFIG_PATH/limits.cnf" /etc/systemd/system/mariadb.service.d/limits.cnf
+cp "$CONFIG_PATH/template.resolve.cnf" /etc/my.cnf.d/resolve.cnf
+cp "$CONFIG_PATH/template.limits.cnf" /etc/systemd/system/mariadb.service.d/limits.cnf
 
 # Restart and enable MariaDB service
 echo "Restart MariaDB to apply changes and enable MariaDB to start on reboot"

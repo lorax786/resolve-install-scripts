@@ -9,7 +9,7 @@ if ! rpm -q firewalld &> /dev/null; then
 fi
 
 # Check if firewalld service is active
-if ! systemctl is-active --quiet firewalld; then
+if ! systemctl is-active firewalld; then
   echo "firewalld is installed but not running. Starting it now..."
   systemctl start firewalld
 fi
