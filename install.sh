@@ -155,11 +155,17 @@ fi
 # Give service account permissions to where resolve install files will be
 RESOLVE_INSTALL_DEST="$INSTALL_DIR/resolve"
 mkdir "$RESOLVE_INSTALL_DEST"
-chown resolve "$RESOLVE_INSTALL_DEST"
+chown resolve:resolve "$RESOLVE_INSTALL_DEST"
 
-RESOLVE_SOURCECODE_FILE=$(ls "$CURRENT_DIR/dist" | head -n 1)
-RESOLVE_CONFIG_FILE="resolve-linux64-$RESOLVE_VERSION.gov.tar.gz"
+RESOLVE_SOURCECODE_FILE="resolve-linux64-$RESOLVE_VERSION.gov.tar.gz"
+RESOLVE_CONFIG_FILE=$(grep 'RESOLVE_CONFIG_FILE=' .config| cut -d '=' -f2- | tr -d '"')
+
+if [[ $RESOLVE_CONFIG_FILE == "" ]]; then
+  echo "There is no custom config file, blueprint.properties, that was detected in the .config file, using the default one in the configs folder." 
+  RESOLVE_CONFIG_FILE="blueprint.properties"
+fi
 
 # INSTALL RESOLVE ACTION PRO
+echo "Starting Resolve Action Pro core installation..."
 bash "$CURRENT_DIR/scripts/resolve.sh" "$RESOLVE_USER" "$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE" "$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE" "$RESOLVE_INSTALL_DEST"
-
+echo "Resolve Action Pro core installation complete."
