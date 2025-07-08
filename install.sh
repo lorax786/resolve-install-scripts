@@ -57,21 +57,25 @@ else
   done
 
   if [[ "$DOWNLOAD_FILE" == true ]]; then
-    echo "Downloading Files CLI App..."
-    #ARCH=$(rpm -q --qf '%{ARCH}' rpm)
-    curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_amd64.rpm" -o files-cli.rpm
 
-    echo "Download complete.Installing Files CLI APP..."
-    dnf install ./files-cli.rpm
-    FILES_CLI_APP=$(files-cli --version)
-    rm -rf ./files-cli.rpm
+    echo "Checking Files CLI App is installed..."
+    if command -v files-cli &> /dev/null; then
+      echo "Need to install Files CLI App.Downloading Files CLI App..."
+      #ARCH=$(rpm -q --qf '%{ARCH}' rpm)
+      curl -L "https://github.com/Files-com/files-cli/releases/latest/download/files-cli_linux_amd64.rpm" -o files-cli.rpm
 
-    echo "Install complete. Files CLI App version: $FILES_CLI_APP"
-    echo "Configuring Files CLI App..."
-    FILES_API_KEY=$(grep 'FILES_API_KEY=' .config | cut -d '=' -f2- | tr -d '"')
-    FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .config | cut -d '=' -f2- | tr -d '"')
-    files-cli config set --api-key $FILES_API_KEY --subdomain $FILES_SUBDOMAIN
-    echo "Configuration complete."
+      echo "Download complete.Installing Files CLI APP..."
+      dnf install ./files-cli.rpm
+      FILES_CLI_APP=$(files-cli --version)
+      rm -rf ./files-cli.rpm
+
+      echo "Install complete. Files CLI App version: $FILES_CLI_APP"
+      echo "Configuring Files CLI App..."
+      FILES_API_KEY=$(grep 'FILES_API_KEY=' .config | cut -d '=' -f2- | tr -d '"')
+      FILES_SUBDOMAIN=$(grep 'FILES_SUBDOMAIN=' .config | cut -d '=' -f2- | tr -d '"')
+      files-cli config set --api-key $FILES_API_KEY --subdomain $FILES_SUBDOMAIN
+      echo "Configuration complete."
+    fi
 
     echo "Downloading Resolve source code files..."
     RESOLVE_VERSION=$(grep 'RESOLVE_VERSION=' .config| cut -d '=' -f2- | tr -d '"')
@@ -167,5 +171,10 @@ fi
 
 # INSTALL RESOLVE ACTION PRO
 echo "Starting Resolve Action Pro core installation..."
-bash "$CURRENT_DIR/scripts/resolve.sh" "$RESOLVE_USER" "$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE" "$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE" "$RESOLVE_INSTALL_DEST"
+echo "Logging into Resolve Service account..."
+su - $RESOLVE_USER -c bash "'$CURRENT_DIR/scripts/resolve.sh' '$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE' '$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE' '$RESOLVE_INSTALL_DEST' && \
+exit"
+echo "Logging out of Resolve Service account."
+
+bash "$CURRENT_DIR/scripts/resolve_config_apply.sh"
 echo "Resolve Action Pro core installation complete."
