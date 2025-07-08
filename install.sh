@@ -171,5 +171,10 @@ fi
 
 # INSTALL RESOLVE ACTION PRO
 echo "Starting Resolve Action Pro core installation..."
-bash "$CURRENT_DIR/scripts/resolve.sh" "$RESOLVE_USER" "$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE" "$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE" "$RESOLVE_INSTALL_DEST"
+echo "Logging into Resolve Service account..."
+su - $RESOLVE_USER -c bash "'$CURRENT_DIR/scripts/resolve.sh' '$CURRENT_DIR/dist/$RESOLVE_SOURCECODE_FILE' '$CURRENT_DIR/configs/$RESOLVE_CONFIG_FILE' '$RESOLVE_INSTALL_DEST' && \
+exit"
+echo "Logging out of Resolve Service account."
+
+bash "$CURRENT_DIR/scripts/resolve_config_apply.sh"
 echo "Resolve Action Pro core installation complete."
